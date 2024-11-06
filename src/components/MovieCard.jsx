@@ -7,14 +7,14 @@ const MovieCard = ({data}) => {
         navigate("/details");
     };
     return (
-        <li onClick={handleClick}>
+        <div onClick={handleClick}>
             <img
                 src={baseUrl + data.poster_path}
                 alt={data.title}
             />
             <p className="movie-title">{data.title}</p>
             <p className="movie-average">평점 :{data.vote_average}</p>
-        </li>
+        </div>
     );
 };
 

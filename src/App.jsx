@@ -1,10 +1,10 @@
 import {useState} from "react";
 import {MovieListData} from "./data/MovieListData";
-import MovieCard from "./components/MovieCard";
 import MovieDetail from "./components/MovieDetail";
-import {Route, Routes, BrowserRouter as Router} from "react-router-dom";
+import {Route, Routes} from "react-router-dom";
 import "./App.css";
 
+import MovieList from "./components/MovieList";
 function App() {
     const [data, setData] = useState(MovieListData);
 
@@ -12,16 +12,7 @@ function App() {
         <Routes>
             <Route
                 path="/"
-                element={
-                    <ul className="movie-list">
-                        {data.results.map((el, index) => (
-                            <MovieCard
-                                key={index}
-                                data={el}
-                            />
-                        ))}
-                    </ul>
-                }
+                element={<MovieList data={data} />}
             />
             <Route
                 path="/details"

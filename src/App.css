@@ -64,19 +64,22 @@
 /* Swiper Navigation */
 .swiper-button-next,
 .swiper-button-prev {
-    color: #fff; /* 내비게이션 버튼 색상 */
+    color: #111 !important; /* 내비게이션 버튼 색상 */
     position: absolute;
     top: 50%;
     transform: translateY(-50%);
     z-index: 10;
 }
-
+.swiper-button-next::after,
+.swiper-button-prev::after {
+    font-size: 30px !important;
+}
 .swiper-button-next {
-    right: 15px;
+    right: 0px !important;
 }
 
 .swiper-button-prev {
-    left: 15px;
+    left: 0px !important;
 }
 
 /* Swiper Pagination */

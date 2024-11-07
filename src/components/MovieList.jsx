@@ -1,5 +1,3 @@
-"use client";
-
 import MovieCard from "./MovieCard";
 import {Swiper, SwiperSlide} from "swiper/react";
 import {Navigation, Autoplay} from "swiper/modules";

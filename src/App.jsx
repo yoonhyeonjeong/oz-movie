@@ -4,9 +4,12 @@ import {Route, Routes} from "react-router-dom";
 import "./App.css";
 import MovieListData from "./data/MovieListData.json";
 import MovieList from "./components/MovieList";
+import {useEffect} from "react";
 function App() {
-    const [data, setData] = useState(MovieListData);
-
+    const [data, setData] = useState(null);
+    useEffect(() => {
+        setData(MovieListData);
+    }, []); // 한번만실행
     return (
         <Routes>
             <Route

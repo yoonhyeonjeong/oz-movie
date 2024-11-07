@@ -1,21 +1,17 @@
-import {useState} from "react";
+import "./App.css";
 import MovieDetail from "./components/MovieDetail";
 import {Route, Routes} from "react-router-dom";
-import "./App.css";
 import MovieList from "./components/MovieList";
-import MovieListData from "./data/MovieListData.json";
-import {useEffect} from "react";
 
 function App() {
-    const [data, setData] = useState(MovieListData);
     return (
         <Routes>
             <Route
                 path="/"
-                element={<MovieList data={data} />}
+                element={<MovieList />}
             />
             <Route
-                path="/details"
+                path="/movie/:id"
                 element={<MovieDetail />}
             />
         </Routes>

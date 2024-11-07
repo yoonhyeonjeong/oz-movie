@@ -1,8 +1,8 @@
-import MovieDetailData from "../data/MovieDetailData";
-import {baseUrl} from "../data/MovieListData";
 import {useState} from "react";
+import MovieDetailData from "../data/MovieDetailData.json";
 const MovieDetail = () => {
     const [data, setData] = useState(MovieDetailData);
+    const baseUrl = "https://image.tmdb.org/t/p/w500";
     return (
         <div className="movie-detail">
             <div className="img">

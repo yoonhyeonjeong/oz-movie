@@ -1,9 +1,8 @@
 import {useState} from "react";
-import {MovieListData} from "./data/MovieListData";
 import MovieDetail from "./components/MovieDetail";
 import {Route, Routes} from "react-router-dom";
 import "./App.css";
-
+import MovieListData from "./data/MovieListData.json";
 import MovieList from "./components/MovieList";
 function App() {
     const [data, setData] = useState(MovieListData);

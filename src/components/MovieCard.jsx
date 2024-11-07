@@ -1,7 +1,7 @@
-import {baseUrl} from "../data/MovieListData";
 import {useNavigate} from "react-router-dom";
 
 const MovieCard = ({data}) => {
+    const baseUrl = "https://image.tmdb.org/t/p/w500";
     const navigate = useNavigate();
     const handleClick = () => {
         navigate("/details");

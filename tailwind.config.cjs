@@ -8,6 +8,7 @@ module.exports = {
             transparent: "transparent",
             white: "#ffffff",
             midnightBlack: "#121212",
+            red: "#bf1b23",
             metal: "#565584",
             tahiti: "#3ab7bf",
             silver: "#ecebff",

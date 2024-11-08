@@ -1,32 +1,9 @@
-import styled from "styled-components";
-const LoginContainer = styled.div`
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    height: 100vh;
-    .login {
-        padding: 20px;
-        border: solid 1px gray;
-        width: 100%;
-        border-radius: 10px;
-    }
-    h2 {
-        text-align: left;
-    }
-    form {
-        text-align: left;
-    }
-    form div + div {
-        margin-top: 20px;
-    }
-`;
-
 const MovieLogin = () => {
     return (
-        <LoginContainer>
-            <div className="max-w-md login">
-                <h2 className="text-2xl font-bold mb-6">로그인</h2>
-                <form>
+        <div className="flex items-center justify-center h-screen">
+            <div className="p-20 border border-gray-500 w-full max-w-[500px] rounded-lg">
+                <h2 className="text-2xl font-bold mb-6 text-left w-500">로그인</h2>
+                <form className="text-left space-y-5">
                     <div>
                         <label
                             htmlFor="email"
@@ -58,13 +35,13 @@ const MovieLogin = () => {
                     </div>
                     <button
                         type="submit"
-                        className="w-full bg-midnightBlack text-white font-bold rounded-md p-10 mt-30"
+                        className="w-full !mt-20 bg-red text-white font-bold rounded-md p-10"
                     >
                         로그인
                     </button>
                 </form>
             </div>
-        </LoginContainer>
+        </div>
     );
 };
 

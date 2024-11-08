@@ -21,11 +21,29 @@ const MovieList = () => {
             <Swiper
                 modules={[Navigation, Autoplay]}
                 navigation
-                // autoplay={{delay: 3000, disableOnInteraction: false}}
-                spaceBetween={20}
-                slidesPerView={5}
-                loop={true}
-                className="mySwiper p-5"
+                autoplay={{delay: 3000, disableOnInteraction: false}}
+                breakpoints={{
+                    640: {
+                        slidesPerView: 1, // 640px 이하에서는 1개의 슬라이드
+                        spaceBetween: 10, // 작은 화면에서 간격 좁히기
+                    },
+                    768: {
+                        slidesPerView: 2, // 768px 이상에서는 2개의 슬라이드
+                        spaceBetween: 15, // 적당한 간격
+                    },
+                    1024: {
+                        slidesPerView: 3, // 1024px 이상에서는 3개의 슬라이드
+                        spaceBetween: 20, // 좀 더 넓은 간격
+                    },
+                    1280: {
+                        slidesPerView: 4, // 1280px 이상에서는 4개의 슬라이드
+                        spaceBetween: 25, // 넓은 간격
+                    },
+                    1440: {
+                        slidesPerView: 5, // 1440px 이상에서는 5개의 슬라이드
+                        spaceBetween: 30, // 가장 넓은 간격
+                    },
+                }}
             >
                 {popularData && popularData.length > 0 ? (
                     popularData.map(el => (

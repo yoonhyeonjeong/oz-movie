@@ -24,7 +24,8 @@
 /* Swiper Navigation */
 .swiper-button-next,
 .swiper-button-prev {
-    color: #111 !important; /* 내비게이션 버튼 색상 */
+    color: #fff !important;
+    opacity: 0.7;
     position: absolute;
     top: 50%;
     transform: translateY(-50%);
@@ -43,5 +44,4 @@
 .swiper-slide img {
     object-fit: cover;
     width: 100%;
-    height: 500px;
 }

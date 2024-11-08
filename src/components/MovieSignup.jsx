@@ -1,32 +1,9 @@
-import styled from "styled-components";
-const MovieSignUpContainer = styled.div`
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    height: 100vh;
-    .signup {
-        padding: 20px;
-        border: solid 1px gray;
-        width: 100%;
-        border-radius: 10px;
-    }
-    h2 {
-        text-align: left;
-    }
-    form {
-        text-align: left;
-    }
-    form div + div {
-        margin-top: 20px;
-    }
-`;
-
 const MovieSignup = () => {
     return (
-        <MovieSignUpContainer>
-            <div className="max-w-md signup">
-                <h2 className="text-2xl font-bold mb-6">회원가입</h2>
-                <form>
+        <div className="flex items-center justify-center h-screen">
+            <div className="p-20 border border-gray-500 w-full max-w-[500px] rounded-lg">
+                <h2 className="text-2xl font-bold mb-6 text-left w-500">회원가입</h2>
+                <form className="text-left space-y-5">
                     <div>
                         <label
                             htmlFor="username"
@@ -88,13 +65,13 @@ const MovieSignup = () => {
                     </div>
                     <button
                         type="submit"
-                        className="w-full bg-midnightBlack text-white font-bold rounded-md p-10 mt-30"
+                        className="w-full !mt-20 bg-red text-white font-bold rounded-md p-10"
                     >
                         회원가입
                     </button>
                 </form>
             </div>
-        </MovieSignUpContainer>
+        </div>
     );
 };
 

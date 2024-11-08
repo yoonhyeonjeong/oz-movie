@@ -1,13 +1,13 @@
 const MovieCard = ({data}) => {
     const baseUrl = "https://image.tmdb.org/t/p/w500";
     return (
-        <div>
+        <div className="rounded-sm">
             <img
                 src={baseUrl + data.poster_path}
                 alt={data.title}
             />
-            <p className="movie-title">{data.title}</p>
-            <p className="movie-average">평점 :{data.vote_average}</p>
+            <p className="text-lg text-center mt-10">{data.title}</p>
+            <p className="movie-average">평점 {data.vote_average}</p>
         </div>
     );
 };

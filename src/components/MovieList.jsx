@@ -16,24 +16,28 @@ const MovieList = () => {
         fetchPopularMovie().then(data => setPopularData(data.results));
     }, []);
     return (
-        <div className="p-4">
-            <h2>인기 영화 20</h2>
+        <div className="p-40 mt-70 relative">
+            <h1 className="text-3xl font-semibold text-left mb-20">인기순</h1>
             <Swiper
                 modules={[Navigation, Autoplay]}
                 navigation
-                autoplay={{delay: 3000, disableOnInteraction: false}}
+                // autoplay={{delay: 3000, disableOnInteraction: false}}
                 spaceBetween={20}
                 slidesPerView={5}
                 loop={true}
-                className="mySwiper"
+                className="mySwiper p-5"
             >
-                {popularData.map(el => (
-                    <SwiperSlide key={el.id}>
-                        <Link to={`/movie/${el.id}`}>
-                            <MovieCard data={el} />
-                        </Link>
-                    </SwiperSlide>
-                ))}
+                {popularData && popularData.length > 0 ? (
+                    popularData.map(el => (
+                        <SwiperSlide key={el.id}>
+                            <Link to={`/movie/${el.id}`}>
+                                <MovieCard data={el} />
+                            </Link>
+                        </SwiperSlide>
+                    ))
+                ) : (
+                    <div>인기 영화를 불러오는 중입니다...</div>
+                )}
             </Swiper>
         </div>
     );

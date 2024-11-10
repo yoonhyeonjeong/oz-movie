@@ -1,7 +1,7 @@
 const MovieCard = ({data}) => {
     const baseUrl = "https://image.tmdb.org/t/p/w500";
     return (
-        <div className="rounded-sm">
+        <div>
             <img
                 src={baseUrl + data.poster_path}
                 alt={data.title}

@@ -1,7 +1,7 @@
 import MovieCard from "./MovieCard";
 import {Swiper, SwiperSlide} from "swiper/react";
 import {Navigation, Autoplay} from "swiper/modules";
-import {fetchPopularMovie} from "../api/api";
+import {fetchReleaseMovie} from "../api/api";
 import {Link} from "react-router-dom";
 // Import Swiper styles
 import "swiper/css";
@@ -11,13 +11,18 @@ import "swiper/css/autoplay";
 import {useEffect, useState} from "react";
 
 const MovieList = () => {
-    const [popularData, setPopularData] = useState([]);
+    const [releaseData, setReleaseData] = useState([]);
     useEffect(() => {
-        fetchPopularMovie().then(data => setPopularData(data.results));
+        fetchReleaseMovie().then(data => {
+            if (data) {
+                const sortedMovies = data.results.sort((a, b) => b.vote_average - a.vote_average);
+                setReleaseData(sortedMovies);
+            }
+        });
     }, []);
     return (
         <div className="p-40 mt-70 relative">
-            <h1 className="text-3xl font-semibold text-left mb-20">인기순</h1>
+            <h1 className="text-3xl font-semibold text-left mb-20">개봉예정 영화</h1>
             <Swiper
                 modules={[Navigation, Autoplay]}
                 navigation
@@ -45,8 +50,8 @@ const MovieList = () => {
                     },
                 }}
             >
-                {popularData && popularData.length > 0 ? (
-                    popularData.map(el => (
+                {releaseData && releaseData.length > 0 ? (
+                    releaseData.map(el => (
                         <SwiperSlide key={el.id}>
                             <Link to={`/movie/${el.id}`}>
                                 <MovieCard data={el} />
@@ -54,7 +59,7 @@ const MovieList = () => {
                         </SwiperSlide>
                     ))
                 ) : (
-                    <div>인기 영화를 불러오는 중입니다...</div>
+                    <div>개봉예정 영화들을 불러오는 중입니다...</div>
                 )}
             </Swiper>
         </div>

@@ -1,7 +1,7 @@
 import {useState, useEffect} from "react";
 import useDebounce from "../hook/useDebounce";
 import {FetchSearchMovie} from "../api/api";
-const MovieInput = ({searchData, setSearchData}) => {
+const MovieInput = ({searchData, setSearchData, showSearch, setShowSearch}) => {
     // 인풋 상태
     const [search, setSearch] = useState("");
     const handleChange = e => {
@@ -21,17 +21,26 @@ const MovieInput = ({searchData, setSearchData}) => {
             setSearchData([]);
         }
     }, [debounceSearch, setSearchData]);
+    // 버튼 클릭
+    const handleClick = () => {
+        setShowSearch(true);
+    };
     return (
         <>
-            <div className="ml-auto relative">
+            <div className="ml-auto relative hidden lg:block">
                 <input
-                    className="text-midnightBlack p-4 w-300 pl-10"
+                    className="text-midnightBlack p-4 w-full pl-10"
                     type="text"
                     value={search}
                     placeholder="영화제목을 입력하세요"
                     onChange={handleChange}
                 />
-                <span className="absolute right-4 top-1/2 transform -translate-y-1/2">🔍</span>
+                <button
+                    className="absolute right-4 top-1/2 transform -translate-y-1/2"
+                    onClick={handleClick}
+                >
+                    🔍
+                </button>
             </div>
         </>
     );

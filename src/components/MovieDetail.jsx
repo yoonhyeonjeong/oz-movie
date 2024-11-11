@@ -50,7 +50,8 @@ const MovieDetail = () => {
                             </span>
                         ))}
                     </p>
-                    <p className="mt-8">{detailData.overview}</p>
+                    <p className="mt-8">개봉일 : {detailData.release_date}</p>
+                    <p className="mt-8 leading-relaxed line-clamp-6 overflow-hidden">{detailData.overview}</p>
                 </div>
             </div>
         </MovieDetailContainer>

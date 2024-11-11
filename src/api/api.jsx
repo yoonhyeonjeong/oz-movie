@@ -46,3 +46,18 @@ export async function FetchSearchMovie(query) {
         console.error("검색 하는중.. 에러 발생");
     }
 }
+// 개봉
+export async function fetchReleaseMovie() {
+    try {
+        const response = await axios.get("https://api.themoviedb.org/3/movie/upcoming", {
+            params: {
+                api_key: APIKEY,
+                language: "ko-KR",
+            },
+        });
+        console.log("개봉", response.data);
+        return response.data;
+    } catch (error) {
+        console.error("검색 하는중.. 에러 발생");
+    }
+}

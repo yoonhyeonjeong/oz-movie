@@ -23,6 +23,7 @@ const MovieDetail = () => {
     if (!detailData) {
         return <div>Loading...</div>;
     }
+    console.log(detailData);
     return (
         <MovieDetailContainer
             backgroundImage={baseUrl + detailData.backdrop_path}
@@ -38,6 +39,7 @@ const MovieDetail = () => {
                 </div>
                 <div className="text-left ml-[20px]">
                     <p className="text-3xl">{detailData.title}</p>
+                    {detailData.tagline && <p className="text-2xl mt-8">{detailData.tagline}</p>}
                     <p className="mt-10">평점 : {detailData.vote_average}</p>
                     <p className="mt-8">
                         장르 :

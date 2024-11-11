@@ -16,17 +16,14 @@ const MovieNavBar = ({searchData, setSearchData, showSearch, setShowSearch}) => 
 
     return (
         <>
-            <nav
-                className={`bg-midnightBlack text-white flex items-center gap-x-8 p-20 text-18 fixed top-0 left-0 w-full z-[50] transition-all duration-300 ${
-                    isMenuOpen ? "hidden" : "" // 메뉴가 열리면 네브바 숨기기
-                }`}
-            >
+            <nav className="bg-midnightBlack text-white flex items-center gap-x-8 p-20 text-18 fixed top-0 left-0 w-full z-[60] transition-all duration-300">
                 <Link
                     to={"/"}
                     onClick={() => {
                         setSearchData([]);
                         setShowSearch(false);
                     }}
+                    className={`${isMenuOpen ? "opacity-0 pointer-events-none" : ""}`}
                 >
                     홈
                 </Link>
@@ -36,6 +33,7 @@ const MovieNavBar = ({searchData, setSearchData, showSearch, setShowSearch}) => 
                         setSearchData([]);
                         setShowSearch(false);
                     }}
+                    className={`${isMenuOpen ? "opacity-0 pointer-events-none" : ""}`}
                 >
                     로그인
                 </Link>
@@ -45,6 +43,7 @@ const MovieNavBar = ({searchData, setSearchData, showSearch, setShowSearch}) => 
                         setSearchData([]);
                         setShowSearch(false);
                     }}
+                    className={`${isMenuOpen ? "opacity-0 pointer-events-none" : ""}`}
                 >
                     회원가입
                 </Link>
@@ -57,7 +56,7 @@ const MovieNavBar = ({searchData, setSearchData, showSearch, setShowSearch}) => 
 
                 {/* 햄버거 버튼 */}
                 <button
-                    className="sm:hidden text-white text-[30px] ml-auto w-[30px] h-[30px] flex items-center justify-center mt-[-5px] fixed top-[20px] right-[20px] z-[99999]"
+                    className="sm:hidden text-white text-[30px] ml-auto w-[30px] h-[30px] flex items-center justify-center mt-[-5px] fixed top-[20px] right-[20px] z-[999999]"
                     onClick={() => setIsMenuOpen(prev => !prev)}
                 >
                     {isMenuOpen ? "✕" : "☰"}
@@ -66,25 +65,34 @@ const MovieNavBar = ({searchData, setSearchData, showSearch, setShowSearch}) => 
 
             {/* 모바일메뉴 */}
             {isMenuOpen && (
-                <nav className="lg:hidden bg-midnightBlack text-white absolute top-0 left-0 w-full h-full z-[9999] flex flex-col items-center justify-center pointer-events-auto">
+                <nav className="lg:hidden bg-midnightBlack text-white absolute top-0 left-0 w-full h-full z-[50] flex flex-col items-center justify-center pointer-events-auto">
                     <Link
                         to={"/"}
                         className="mb-4"
-                        onClick={() => setSearchData([])}
+                        onClick={() => {
+                            setSearchData([]);
+                            setIsMenuOpen(false);
+                        }}
                     >
                         홈
                     </Link>
                     <Link
                         to={"/login"}
                         className="mb-4"
-                        onClick={() => setSearchData([])}
+                        onClick={() => {
+                            setSearchData([]);
+                            setIsMenuOpen(false);
+                        }}
                     >
                         로그인
                     </Link>
                     <Link
                         to={"/signup"}
                         className="mb-4"
-                        onClick={() => setSearchData([])}
+                        onClick={() => {
+                            setSearchData([]);
+                            setIsMenuOpen(false);
+                        }}
                     >
                         회원가입
                     </Link>

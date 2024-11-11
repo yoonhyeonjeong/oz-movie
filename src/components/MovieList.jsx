@@ -15,7 +15,12 @@ const MovieList = () => {
     useEffect(() => {
         fetchReleaseMovie().then(data => {
             if (data) {
-                const sortedMovies = data.results.sort((a, b) => b.vote_average - a.vote_average);
+                const sortedMovies = data.results
+                    .sort((a, b) => b.vote_average - a.vote_average)
+                    .map(movie => ({
+                        ...movie,
+                        vote_average: movie.vote_average.toFixed(1),
+                    }));
                 setReleaseData(sortedMovies);
             }
         });

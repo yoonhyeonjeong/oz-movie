@@ -1,7 +1,7 @@
 const MovieLogin = () => {
     return (
         <div className="flex items-center justify-center h-screen">
-            <div className="p-20 border border-gray-500 w-full max-w-[500px] rounded-lg">
+            <div className="p-20 border border-gray-500 w-full max-w-[300px] sm:max-w-[500px] rounded-lg">
                 <h2 className="text-2xl font-bold mb-6 text-left w-500">로그인</h2>
                 <form className="text-left space-y-5">
                     <div>

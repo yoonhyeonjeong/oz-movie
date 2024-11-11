@@ -9,7 +9,7 @@ const MovieInput = ({searchData, setSearchData, showSearch, setShowSearch}) => {
     };
 
     // 디바운스를 적용한검색어
-    const debounceSearch = useDebounce(search, 3000);
+    const debounceSearch = useDebounce(search, 1000);
 
     // api 호출
     useEffect(() => {
@@ -32,6 +32,7 @@ const MovieInput = ({searchData, setSearchData, showSearch, setShowSearch}) => {
     // 버튼 클릭
     const handleClick = () => {
         setShowSearch(true);
+        setSearch("");
     };
     return (
         <>

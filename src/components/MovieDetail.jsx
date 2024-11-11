@@ -4,10 +4,14 @@ import {detailMovie} from "../api/api";
 import styled from "styled-components";
 const MovieDetailContainer = styled.div`
     background-image: ${({backgroundImage}) => `linear-gradient(to top, rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0.6)), url(${backgroundImage})`};
-    /* 태블릿 화면 (600px 이상, 1024px 이하) */
-    @media (min-width: 600px) and (max-width: 1024px) {
-        padding: 30px;
+    .word-keep-all {
+        word-break: keep-all;
     }
+    /* 태블릿 화면 (600px 이상, 1024px 이하) */
+
+    /* @media (min-width: 600px) and (max-width: 1024px) {
+        padding: 30px;
+    } */
 
     /* 모바일 화면 (600px 이하) */
     @media (max-width: 600px) {
@@ -62,7 +66,7 @@ const MovieDetail = () => {
                     />
                 </div>
                 <div className="text-left ml-[20px]">
-                    <p className="text-3xl">{detailData.title}</p>
+                    <p className="text-3xl word-keep-all">{detailData.title}</p>
                     {detailData.tagline && <p className="text-2xl mt-8">{detailData.tagline}</p>}
                     <p className="mt-10">평점 : {detailData.vote_average}</p>
                     <p className="mt-8">

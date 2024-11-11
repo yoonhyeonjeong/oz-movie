@@ -15,7 +15,15 @@ const MovieInput = ({searchData, setSearchData, showSearch, setShowSearch}) => {
     useEffect(() => {
         // 검색어가 있을때만 api 호출
         if (debounceSearch) {
-            FetchSearchMovie(debounceSearch).then(data => setSearchData(data.results));
+            FetchSearchMovie(debounceSearch).then(data => {
+                if (data) {
+                    const sortedMovies = data.results.map(movie => ({
+                        ...movie,
+                        vote_average: movie.vote_average.toFixed(1),
+                    }));
+                    setSearchData(sortedMovies);
+                }
+            });
         } else {
             // 검색어가 비었을 때는 searchData를 빈 배열로 설정
             setSearchData([]);

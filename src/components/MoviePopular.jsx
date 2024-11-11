@@ -7,9 +7,13 @@ const MoviePopular = ({showSearch, searchData}) => {
     useEffect(() => {
         fetchPopularMovie().then(data => {
             if (data) {
-                // 내림차순정렬
-                const sortedMovie = data.results.sort((a, b) => b.vote_average - a.vote_average);
-                setPopularData(sortedMovie);
+                const sortedMovies = data.results
+                    .sort((a, b) => b.vote_average - a.vote_average)
+                    .map(movie => ({
+                        ...movie,
+                        vote_average: movie.vote_average.toFixed(1),
+                    }));
+                setPopularData(sortedMovies);
             }
         });
     }, []);

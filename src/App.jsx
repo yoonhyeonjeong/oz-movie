@@ -1,7 +1,8 @@
 import "./App.css";
 import MovieDetail from "./components/MovieDetail";
 import {Route, Routes} from "react-router-dom";
-import {useState} from "react";
+import {useState, useEffect} from "react";
+import supabase from "./supabase/supabase";
 import MovieList from "./components/MovieList";
 import MovieLogin from "./components/MovieLogin";
 import MovieSignup from "./components/MovieSignup";
@@ -14,6 +15,29 @@ function App() {
     const [showSearch, setShowSearch] = useState(false);
     // 로그인 상태
     const [isLoggedIn, setIsLoggedIn] = useState(false);
+    console.log(isLoggedIn);
+    // 세션 상태 확인 및 유지
+    useEffect(() => {
+        // 현재 세션 확인
+        const checkSession = async () => {
+            const {
+                data: {session},
+            } = await supabase.auth.getSession();
+            setIsLoggedIn(!!session);
+        };
+
+        checkSession();
+
+        // 세션 변경 이벤트 리스너
+        const {
+            data: {subscription},
+        } = supabase.auth.onAuthStateChange((_event, session) => {
+            setIsLoggedIn(!!session);
+        });
+
+        // 클린업
+        return () => subscription.unsubscribe();
+    }, []);
     return (
         <>
             <MovieNavBar

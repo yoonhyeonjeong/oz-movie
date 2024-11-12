@@ -55,7 +55,6 @@ export async function fetchReleaseMovie() {
                 language: "ko-KR",
             },
         });
-        console.log("개봉", response.data);
         return response.data;
     } catch (error) {
         console.error("검색 하는중.. 에러 발생");

@@ -9,8 +9,16 @@ const MovieLogin = ({setIsLoggedIn, isLoggedIn}) => {
     const [error, setError] = useState("");
     const navigate = useNavigate();
 
-    const handleLogin = async e => {
-        e.preventDefault();
+    useEffect(() => {
+        if (isLoggedIn) {
+            console.log(isLoggedIn);
+            // isLoggedIn이 true로 변경되면 홈 페이지로 이동
+            navigate("/");
+        }
+    }, [isLoggedIn, navigate]);
+
+    // 로그인
+    const handleLogin = async () => {
         setError("");
 
         const email = emailRef.current.value;
@@ -26,9 +34,7 @@ const MovieLogin = ({setIsLoggedIn, isLoggedIn}) => {
             if (error) throw error;
             // 로그인 성공시
             setIsLoggedIn(true);
-            console.log(isLoggedIn);
             alert("로그인 되었습니다");
-            navigate("/");
             console.log("로그인 성공:", user);
         } catch (err) {
             console.log("로그인 실패:", err.message);
@@ -36,20 +42,24 @@ const MovieLogin = ({setIsLoggedIn, isLoggedIn}) => {
         }
     };
 
-    // 로그인 상태를 확인하는 방법
-    const checkLoginStatus = async () => {
-        const {
-            data: {user},
-        } = await supabase.auth.getUser();
-        if (user) {
-            console.log("이미 로그인된 사용자:", user);
+    // 슈퍼베이스 카카오 로그인
+    const signInWithKakao = async () => {
+        try {
+            const {data, error} = await supabase.auth.signInWithOAuth({
+                provider: "kakao",
+                options: {
+                    redirectTo: window.location.origin, // 현재 도메인으로 리디렉션
+                },
+            });
+            // 로그인 성공시
+            console.log("로그인 성공:", data);
+            setIsLoggedIn(true);
+            alert("로그인 되었습니다");
+        } catch (err) {
+            console.error("로그인 실패:", err.message);
+            alert("로그인에 실패했습니다");
         }
     };
-
-    // 컴포넌트가 렌더링될 때 로그인 상태를 확인
-    useEffect(() => {
-        checkLoginStatus();
-    }, []);
 
     return (
         <div className="flex items-center justify-center h-screen">
@@ -96,10 +106,18 @@ const MovieLogin = ({setIsLoggedIn, isLoggedIn}) => {
                     {error && <p className="text-red text-md">{error}</p>}
 
                     <button
-                        type="submit"
+                        type="button"
                         className="w-full !mt-20 bg-red text-white font-bold rounded-md p-10"
+                        onClick={handleLogin}
                     >
                         로그인
+                    </button>
+                    <button
+                        type="button"
+                        className="w-full !mt-20 bg-yellow text-midnightBlack font-bold rounded-md p-10"
+                        onClick={signInWithKakao}
+                    >
+                        카카오 로그인
                     </button>
                 </form>
             </div>

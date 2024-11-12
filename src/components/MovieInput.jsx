@@ -36,7 +36,7 @@ const MovieInput = ({searchData, setSearchData, showSearch, setShowSearch}) => {
     };
     return (
         <>
-            <div className="ml-auto relative hidden lg:block">
+            <div className="relative hidden lg:block mr-20">
                 <input
                     className="text-midnightBlack p-4 w-full pl-10"
                     type="text"

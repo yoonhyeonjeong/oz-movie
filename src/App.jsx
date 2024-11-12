@@ -12,6 +12,8 @@ function App() {
     const [searchData, setSearchData] = useState([]);
     // 검색 보여주기
     const [showSearch, setShowSearch] = useState(false);
+    // 로그인 상태
+    const [isLoggedIn, setIsLoggedIn] = useState(false);
     return (
         <>
             <MovieNavBar
@@ -19,6 +21,8 @@ function App() {
                 setSearchData={setSearchData}
                 showSearch={showSearch}
                 setShowSearch={setShowSearch}
+                isLoggedIn={isLoggedIn}
+                setIsLoggedIn={setIsLoggedIn}
             />
             <Routes>
                 <Route
@@ -39,7 +43,12 @@ function App() {
                 />
                 <Route
                     path="/login"
-                    element={<MovieLogin />}
+                    element={
+                        <MovieLogin
+                            setIsLoggedIn={setIsLoggedIn}
+                            isLoggedIn={isLoggedIn}
+                        />
+                    }
                 />
                 <Route
                     path="/signup"

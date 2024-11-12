@@ -2,8 +2,9 @@ import {Link} from "react-router-dom";
 import MovieInput from "./MovieInput";
 import {useState} from "react";
 import MovieSearchList from "./MovieSearchList";
+import MovieLoginStatus from "./MovieLoginStatus";
 
-const MovieNavBar = ({searchData, setSearchData, showSearch, setShowSearch}) => {
+const MovieNavBar = ({searchData, setSearchData, showSearch, setShowSearch, isLoggedIn, setIsLoggedIn}) => {
     // 햄버거 메뉴 상태
     const [isMenuOpen, setIsMenuOpen] = useState(false);
 
@@ -25,33 +26,46 @@ const MovieNavBar = ({searchData, setSearchData, showSearch, setShowSearch}) => 
                     }}
                     className={`${isMenuOpen ? "opacity-0 pointer-events-none" : ""}`}
                 >
-                    홈
+                    MOVIEMOVIE
                 </Link>
-                <Link
-                    to={"/login"}
-                    onClick={() => {
-                        setSearchData([]);
-                        setShowSearch(false);
-                    }}
-                    className={`${isMenuOpen ? "opacity-0 pointer-events-none" : ""}`}
-                >
-                    로그인
-                </Link>
-                <Link
-                    to={"/signup"}
-                    onClick={() => {
-                        setSearchData([]);
-                        setShowSearch(false);
-                    }}
-                    className={`${isMenuOpen ? "opacity-0 pointer-events-none" : ""}`}
-                >
-                    회원가입
-                </Link>
-                <MovieInput
-                    searchData={searchData}
-                    setSearchData={setSearchData}
-                    showSearch={showSearch}
-                    setShowSearch={setShowSearch}
+
+                <div className="ml-auto flex items-center justify-center">
+                    <MovieInput
+                        searchData={searchData}
+                        setSearchData={setSearchData}
+                        showSearch={showSearch}
+                        setShowSearch={setShowSearch}
+                    />
+                    {/* 로그인 안했을때 기본 */}
+                    {!isLoggedIn && (
+                        <div className="flex gap-10 sm:flex hidden">
+                            <Link
+                                to={"/login"}
+                                onClick={() => {
+                                    setSearchData([]);
+                                    setShowSearch(false);
+                                }}
+                                className={`${isMenuOpen ? "opacity-0 pointer-events-none" : ""}`}
+                            >
+                                로그인
+                            </Link>
+                            <Link
+                                to={"/signup"}
+                                onClick={() => {
+                                    setSearchData([]);
+                                    setShowSearch(false);
+                                }}
+                                className={`${isMenuOpen ? "opacity-0 pointer-events-none" : ""}`}
+                            >
+                                회원가입
+                            </Link>
+                        </div>
+                    )}
+                </div>
+
+                <MovieLoginStatus
+                    isLoggedIn={isLoggedIn}
+                    setIsLoggedIn={setIsLoggedIn}
                 />
 
                 {/* 햄버거 버튼 */}

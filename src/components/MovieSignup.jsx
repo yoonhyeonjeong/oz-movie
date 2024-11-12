@@ -1,5 +1,6 @@
 import {useState, useRef} from "react";
 import supabase from "../supabase/supabase";
+import {useNavigate} from "react-router-dom";
 
 const MovieSignup = () => {
     const nameRef = useRef(null);
@@ -8,56 +9,82 @@ const MovieSignup = () => {
     const confirmPasswordRef = useRef(null);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
+    // 이메일과 비밀번호 에러 상태 관리
+    const [emailError, setEmailError] = useState(null);
+    const [passwordError, setPasswordError] = useState(null);
+    const [confirmPasswordError, setConfirmPasswordError] = useState(null);
+    const navigate = useNavigate();
 
+    // 비밀번호 유효성 검사
+    const handlePasswordChange = () => {
+        const password = passwordRef.current.value;
+
+        if (password.length < 6) {
+            setPasswordError("비밀번호는 6자 이상이어야 합니다");
+        } else {
+            setPasswordError(null);
+        }
+    };
+
+    // 이메일 유효성 검사
+    const handleEmailChange = () => {
+        const email = emailRef.current.value;
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/; // 이메일 형식 정규식
+
+        if (!emailRegex.test(email)) {
+            setEmailError("유효한 이메일 주소를 입력하세요");
+        } else {
+            setEmailError(null);
+        }
+    };
+
+    // 비밀번호확인 유효성 검사 함수
+    const handlePassWordChange = () => {
+        const password = passwordRef.current.value;
+        const confirmPassword = confirmPasswordRef.current.value;
+        if (password !== confirmPassword) {
+            setConfirmPasswordError("비밀번호가 일치하지 않습니다");
+        } else {
+            setConfirmPasswordError(null);
+        }
+    };
+
+    // 회원가입
     const signupFunction = async e => {
         e.preventDefault();
         setLoading(true);
-        setError(null); // 기존의 오류 메시지 초기화
+        setError(null);
 
         const name = nameRef.current.value;
         const email = emailRef.current.value;
         const password = passwordRef.current.value;
         const confirmPassword = confirmPasswordRef.current.value;
 
-        // 비밀번호 일치 여부 체크
-        if (password !== confirmPassword) {
-            setError("비밀번호가 일치하지 않습니다");
-            setLoading(false); // 로딩 상태 해제
-            return;
-        }
-
-        // 비밀번호 길이 체크
-        if (password.length < 6) {
-            setError("비밀번호는 6자 이상이어야 합니다");
-            setLoading(false); // 로딩 상태 해제
-            return;
-        }
-
         try {
-            // 회원가입
+            // 슈퍼베이스 회원가입
             const {data, error} = await supabase.auth.signUp({
-                email: email,
-                password: password,
+                email,
+                password,
                 options: {
                     data: {
-                        name: name,
+                        name,
                     },
                 },
             });
 
             if (error) {
-                console.error("회원가입 오류:", error.message);
                 setError(error.message);
                 setLoading(false);
                 return;
             }
-
-            console.log("회원가입 성공:", data);
+            // 회원가입 됬을때 홈으로 이동
+            alert("회원가입이 완료되었습니다");
+            navigate("/");
         } catch (error) {
-            console.error("회원가입 중 에러 발생:", error);
             setError("회원가입 중 에러가 발생했습니다.");
+            console.log(error.message);
         } finally {
-            setLoading(false); // 로딩 상태 해제
+            setLoading(false);
         }
     };
 
@@ -66,13 +93,13 @@ const MovieSignup = () => {
             <div className="p-20 border border-gray-500 w-full max-w-[300px] sm:max-w-[500px] rounded-lg">
                 <h2 className="text-2xl font-bold mb-6 text-left w-500">회원가입</h2>
                 <form
-                    className="text-left space-y-5"
+                    className="text-left space-y-10 mt-10"
                     onSubmit={signupFunction}
                 >
                     <div>
                         <label
                             htmlFor="username"
-                            className="block text-sm font-medium text-gray-700 mb-1"
+                            className="block text-md font-medium text-gray-700 mb-1"
                         >
                             사용자 이름
                         </label>
@@ -81,13 +108,14 @@ const MovieSignup = () => {
                             type="text"
                             name="username"
                             id="username"
-                            className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
+                            className="w-full px-5 py-8 mt-4 border rounded-md"
+                            placeholder="이름을 입력해주세요"
                         />
                     </div>
                     <div>
                         <label
                             htmlFor="email"
-                            className="block text-sm font-medium text-gray-700 mb-1"
+                            className="block text-md font-medium text-gray-700 mb-1"
                         >
                             이메일
                         </label>
@@ -96,14 +124,17 @@ const MovieSignup = () => {
                             type="email"
                             name="email"
                             id="email"
-                            className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
+                            className="w-full px-5 py-8 mt-4 border rounded-md"
                             required
+                            onChange={handleEmailChange}
+                            placeholder="이메일을 입력해주세요"
                         />
                     </div>
+                    {emailError && <p className="text-red text-md">{emailError}</p>}
                     <div>
                         <label
                             htmlFor="password"
-                            className="block text-sm font-medium text-gray-700 mb-1"
+                            className="block text-md font-medium text-gray-700 mb-1"
                         >
                             비밀번호
                         </label>
@@ -112,14 +143,17 @@ const MovieSignup = () => {
                             type="password"
                             name="password"
                             id="password"
-                            className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
+                            className="w-full px-5 py-8 mt-4 border rounded-md"
                             required
+                            onChange={handlePasswordChange}
+                            placeholder="비밀번호를 입력해주세요"
                         />
                     </div>
+                    {passwordError && <p className="text-red text-md">{passwordError}</p>}
                     <div>
                         <label
                             htmlFor="confirmPassword"
-                            className="block text-sm font-medium text-gray-700 mb-1"
+                            className="block text-md font-medium text-gray-700 mb-1"
                         >
                             비밀번호 확인
                         </label>
@@ -128,10 +162,12 @@ const MovieSignup = () => {
                             type="password"
                             name="confirmPassword"
                             id="confirmPassword"
-                            className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
+                            className="w-full px-5 py-8 mt-4 border rounded-md"
+                            onChange={handlePassWordChange}
+                            placeholder="비밀번호를 입력해주세요"
                         />
                     </div>
-                    {error && <p className="text-red-600 text-sm">{error}</p>}
+                    {confirmPasswordError && <p className="text-red text-md">{confirmPasswordError}</p>}
                     <button
                         type="submit"
                         className="w-full !mt-20 bg-red text-white font-bold rounded-md p-10"

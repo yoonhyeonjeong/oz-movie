@@ -15,7 +15,7 @@ function App() {
     const [showSearch, setShowSearch] = useState(false);
     // 로그인 상태
     const [isLoggedIn, setIsLoggedIn] = useState(false);
-    console.log(isLoggedIn);
+    // console.log(isLoggedIn);
     // 세션 상태 확인 및 유지
     useEffect(() => {
         // 현재 세션 확인

@@ -1,19 +1,16 @@
 import {createSlice} from "@reduxjs/toolkit";
 import {fetchPopularMovie, fetchDetailMovie, FetchSearchMovie, fetchReleaseMovie} from "./thunk";
 
-// 초기상태
-const initialState = {
-    popularMovie: [], // 인기영화
-    detailMovie: [], // 디테일
-    searchMovie: [], // 검색
-    releaseMovie: [], // 개봉
-    status: "idle", // 요청이 시작되지않은상태
-    error: null,
-};
-
-const movieSlice = createSlice({
+export const movieSlice = createSlice({
     name: "movies",
-    initialState,
+    initialState: {
+        popularMovie: [], // 인기영화
+        detailMovie: [], // 디테일
+        searchMovie: [], // 검색
+        releaseMovie: [], // 개봉
+        status: "idle", // 요청이 시작되지않은상태
+        error: null,
+    },
     extraReducers: builder => {
         builder
             // 인기영화 진행중
@@ -74,5 +71,26 @@ const movieSlice = createSlice({
             });
     },
 });
-
-export default movieSlice.reducer;
+export const searchSlice = createSlice({
+    name: "search",
+    initialState: {
+        searchData: [], // 검색된 영화 목록
+        showSearchMovie: false, // 검색된 영화 목록 보여주기
+        searchInput: "", // 검색 인풋
+    },
+    reducers: {
+        setSearchData: (state, action) => {
+            state.searchData = action.payload;
+        },
+        clearSearchData: state => {
+            state.searchData = [];
+        },
+        setShowSearch: (state, action) => {
+            state.showSearchMovie = action.payload;
+        },
+        setSearchInput: (state, action) => {
+            state.searchInput = action.payload;
+        },
+    },
+});
+export const {setSearchData, clearSearchData, setShowSearch, setSearchInput} = searchSlice.actions;

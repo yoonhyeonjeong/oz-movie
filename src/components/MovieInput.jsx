@@ -1,38 +1,40 @@
-import {useState, useEffect} from "react";
+import {useEffect} from "react";
 import useDebounce from "../hook/useDebounce";
-import {FetchSearchMovie} from "../api/api";
-const MovieInput = ({searchData, setSearchData, showSearch, setShowSearch}) => {
-    // 인풋 상태
-    const [search, setSearch] = useState("");
-    const handleChange = e => {
-        setSearch(e.target.value);
-    };
+import {FetchSearchMovie} from "../RTK/thunk";
+import {selectSortedSearchrMovies} from "../RTK/selector";
+import {useDispatch, useSelector} from "react-redux";
+import {setSearchData, clearSearchData, setSearchInput, setShowSearch} from "../RTK/slice";
+
+const MovieInput = () => {
+    const dispatch = useDispatch();
+    const inputValue = useSelector(state => state.search.searchInput); // 슬라이스에서 인풋 상태 갖고오기
+    const searchMovie = useSelector(selectSortedSearchrMovies); // 정렬된 검색 데이터
 
     // 디바운스를 적용한검색어
-    const debounceSearch = useDebounce(search, 1000);
+    const debounceSearch = useDebounce(inputValue, 1000);
 
-    // api 호출
+    // 검색 api 호출
     useEffect(() => {
-        // 검색어가 있을때만 api 호출
+        console.log("debounceSearch", debounceSearch); // 디바운스 값 확인
+        // 검색어가 있다면
         if (debounceSearch) {
-            FetchSearchMovie(debounceSearch).then(data => {
-                if (data) {
-                    const sortedMovies = data.results.map(movie => ({
-                        ...movie,
-                        vote_average: movie.vote_average.toFixed(1),
-                    }));
-                    setSearchData(sortedMovies);
-                }
-            });
+            dispatch(FetchSearchMovie(debounceSearch)); // api 호출(검색어로)
+            dispatch(setSearchData(searchMovie));
         } else {
-            // 검색어가 비었을 때는 searchData를 빈 배열로 설정
-            setSearchData([]);
+            dispatch(clearSearchData());
         }
-    }, [debounceSearch, setSearchData]);
+    }, [debounceSearch, dispatch]);
+
+    // 입력 이벤트 핸들러
+    const handleChange = e => {
+        dispatch(setSearchInput(e.target.value));
+    };
+
     // 버튼 클릭
     const handleClick = () => {
-        setShowSearch(true);
-        setSearch("");
+        dispatch(setShowSearch(true));
+        dispatch(setSearchInput(""));
+        dispatch(setSearchData(searchMovie));
     };
     return (
         <>
@@ -40,7 +42,7 @@ const MovieInput = ({searchData, setSearchData, showSearch, setShowSearch}) => {
                 <input
                     className="text-midnightBlack p-4 w-full pl-10"
                     type="text"
-                    value={search}
+                    value={inputValue}
                     placeholder="영화제목을 입력하세요"
                     onChange={handleChange}
                 />

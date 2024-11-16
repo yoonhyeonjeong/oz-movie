@@ -3,8 +3,13 @@ import MovieInput from "./MovieInput";
 import {useState} from "react";
 import MovieSearchList from "./MovieSearchList";
 import MovieLoginStatus from "./MovieLoginStatus";
+import {useDispatch, useSelector} from "react-redux";
+import {selectSortedSearchrMovies} from "../RTK/selector";
+import {setSearchData, clearSearchData, setSearchInput, setShowSearch} from "../RTK/slice";
 
-const MovieNavBar = ({searchData, setSearchData, showSearch, setShowSearch, isLoggedIn, setIsLoggedIn}) => {
+const MovieNavBar = ({isLoggedIn, setIsLoggedIn}) => {
+    const dispatch = useDispatch();
+    const searchMovie = useSelector(selectSortedSearchrMovies); // 정렬된 검색 데이터
     // 햄버거 메뉴 상태
     const [isMenuOpen, setIsMenuOpen] = useState(false);
 
@@ -21,8 +26,8 @@ const MovieNavBar = ({searchData, setSearchData, showSearch, setShowSearch, isLo
                 <Link
                     to={"/"}
                     onClick={() => {
-                        setSearchData([]);
-                        setShowSearch(false);
+                        dispatch(clearSearchData());
+                        dispatch(setShowSearch());
                     }}
                     className={`${isMenuOpen ? "opacity-0 pointer-events-none" : ""}`}
                 >
@@ -30,20 +35,15 @@ const MovieNavBar = ({searchData, setSearchData, showSearch, setShowSearch, isLo
                 </Link>
 
                 <div className="ml-auto flex items-center justify-center">
-                    <MovieInput
-                        searchData={searchData}
-                        setSearchData={setSearchData}
-                        showSearch={showSearch}
-                        setShowSearch={setShowSearch}
-                    />
+                    <MovieInput />
                     {/* 로그인 안했을때 기본 */}
                     {!isLoggedIn && (
                         <div className="flex gap-10 sm:flex hidden">
                             <Link
                                 to={"/login"}
                                 onClick={() => {
-                                    setSearchData([]);
-                                    setShowSearch(false);
+                                    dispatch(clearSearchData());
+                                    dispatch(setShowSearch());
                                 }}
                                 className={`${isMenuOpen ? "opacity-0 pointer-events-none" : ""}`}
                             >
@@ -52,8 +52,8 @@ const MovieNavBar = ({searchData, setSearchData, showSearch, setShowSearch, isLo
                             <Link
                                 to={"/signup"}
                                 onClick={() => {
-                                    setSearchData([]);
-                                    setShowSearch(false);
+                                    dispatch(clearSearchData());
+                                    dispatch(setShowSearch());
                                 }}
                                 className={`${isMenuOpen ? "opacity-0 pointer-events-none" : ""}`}
                             >
@@ -84,8 +84,8 @@ const MovieNavBar = ({searchData, setSearchData, showSearch, setShowSearch, isLo
                         to={"/"}
                         className="mb-4"
                         onClick={() => {
-                            setSearchData([]);
-                            setIsMenuOpen(false);
+                            dispatch(clearSearchData());
+                            dispatch(setShowSearch());
                         }}
                     >
                         홈
@@ -94,8 +94,8 @@ const MovieNavBar = ({searchData, setSearchData, showSearch, setShowSearch, isLo
                         to={"/login"}
                         className="mb-4"
                         onClick={() => {
-                            setSearchData([]);
-                            setIsMenuOpen(false);
+                            dispatch(clearSearchData());
+                            dispatch(setShowSearch());
                         }}
                     >
                         로그인
@@ -104,8 +104,8 @@ const MovieNavBar = ({searchData, setSearchData, showSearch, setShowSearch, isLo
                         to={"/signup"}
                         className="mb-4"
                         onClick={() => {
-                            setSearchData([]);
-                            setIsMenuOpen(false);
+                            dispatch(clearSearchData());
+                            dispatch(setShowSearch());
                         }}
                     >
                         회원가입
@@ -114,7 +114,7 @@ const MovieNavBar = ({searchData, setSearchData, showSearch, setShowSearch, isLo
             )}
 
             {/* 검색결과리스트 */}
-            {searchData.length > 0 && <MovieSearchList searchData={searchData} />}
+            {searchMovie.length > 0 && <MovieSearchList searchData={searchMovie} />}
         </>
     );
 };

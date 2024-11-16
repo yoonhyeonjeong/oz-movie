@@ -1,12 +1,14 @@
-import {useEffect, useState} from "react";
+import {useEffect} from "react";
 import {fetchPopularMovie} from "../RTK/thunk";
 import {selectSortedPopularMovies} from "../RTK/selector";
 import {useDispatch, useSelector} from "react-redux";
 import {Link} from "react-router-dom";
 import MovieCard from "./MovieCard";
-const MoviePopular = ({showSearch, searchData}) => {
+const MoviePopular = () => {
     const dispatch = useDispatch();
-    const popularMovie = useSelector(selectSortedPopularMovies);
+    const popularMovie = useSelector(selectSortedPopularMovies); // 정렬된 인기 데이터
+    const showSearch = useSelector(state => state.search.showSearchMovie); // 슬라이스에서 검색된영화 상태 갖고오기
+    const searchData = useSelector(state => state.search.searchData); // 슬라이스에서 검색된영화 상태 갖고오기
     // 컴포넌트가 마운트될때 인기 영화 데이터 호출
     useEffect(() => {
         dispatch(fetchPopularMovie());

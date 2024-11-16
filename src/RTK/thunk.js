@@ -41,7 +41,6 @@ export const FetchSearchMovie = createAsyncThunk("movies/FetchSearchMovie", asyn
                 query: query, // 검색어 쿼리파라미터로 전달
             },
         });
-        console.log("검색", response.data);
         return response.data;
     } catch (error) {
         console.error("검색하는중 오류 발생:", error);

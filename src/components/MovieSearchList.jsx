@@ -2,9 +2,16 @@ import MovieCard from "./MovieCard";
 import styled from "styled-components";
 import {Link, useLocation} from "react-router-dom";
 const MovieSearchContainer = styled.div`
+    a {
+        width: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        > div {
+            width: 70%;
+        }
+    }
     img {
-        width: 15rem;
-        height: 20rem;
         object-fit: cover;
     }
     .movie-average {

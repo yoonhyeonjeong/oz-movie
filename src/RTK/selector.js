@@ -38,3 +38,15 @@ export const selectSortedDetailMovies = createSelector(
         };
     }
 );
+
+// 검색 영화 정렬
+export const selectSortedSearchrMovies = createSelector(
+    state => state.movies.searchMovie,
+    searchMovie =>
+        [...searchMovie]
+            .sort((a, b) => b.vote_average - a.vote_average)
+            .map(movie => ({
+                ...movie,
+                vote_average: Number(movie.vote_average).toFixed(1),
+            }))
+);

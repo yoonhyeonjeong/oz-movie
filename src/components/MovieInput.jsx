@@ -3,7 +3,7 @@ import useDebounce from "../hook/useDebounce";
 import {FetchSearchMovie} from "../RTK/thunk";
 import {selectSortedSearchrMovies} from "../RTK/selector";
 import {useDispatch, useSelector} from "react-redux";
-import {setSearchData, clearSearchData, setSearchInput, setShowSearch} from "../RTK/slice";
+import {setSearchData, clearSearchData, setSearchInput, setSearchVisible, setReleaseVisible} from "../RTK/slice";
 
 const MovieInput = () => {
     const dispatch = useDispatch();
@@ -32,9 +32,10 @@ const MovieInput = () => {
 
     // 버튼 클릭
     const handleClick = () => {
-        dispatch(setShowSearch(true));
-        dispatch(setSearchInput(""));
+        dispatch(setSearchVisible(true));
         dispatch(setSearchData(searchMovie));
+        alert("검색이 완료되었습니다");
+        dispatch(setReleaseVisible(false));
     };
     return (
         <>

@@ -5,14 +5,15 @@ import MovieSearchList from "./MovieSearchList";
 import MovieLoginStatus from "./MovieLoginStatus";
 import {useDispatch, useSelector} from "react-redux";
 import {selectSortedSearchrMovies} from "../RTK/selector";
-import {setSearchData, clearSearchData, setSearchInput, setShowSearch} from "../RTK/slice";
+import {setSearchData, clearSearchData, setSearchInput, setSearchVisible} from "../RTK/slice";
 
 const MovieNavBar = ({isLoggedIn, setIsLoggedIn}) => {
     const dispatch = useDispatch();
     const searchMovie = useSelector(selectSortedSearchrMovies); // 정렬된 검색 데이터
     // 햄버거 메뉴 상태
     const [isMenuOpen, setIsMenuOpen] = useState(false);
-
+    const searchData = useSelector(state => state.search.searchData);
+    console.log(searchData); // 이곳에서 상태를 확인
     // 메뉴 열릴 때 body 스크롤 방지
     if (isMenuOpen) {
         document.body.style.overflow = "hidden"; // 메뉴 열리면 스크롤 비활성화
@@ -26,8 +27,9 @@ const MovieNavBar = ({isLoggedIn, setIsLoggedIn}) => {
                 <Link
                     to={"/"}
                     onClick={() => {
+                        console.log("Clear Search Data Triggered");
                         dispatch(clearSearchData());
-                        dispatch(setShowSearch());
+                        dispatch(setSearchVisible());
                     }}
                     className={`${isMenuOpen ? "opacity-0 pointer-events-none" : ""}`}
                 >
@@ -43,7 +45,7 @@ const MovieNavBar = ({isLoggedIn, setIsLoggedIn}) => {
                                 to={"/login"}
                                 onClick={() => {
                                     dispatch(clearSearchData());
-                                    dispatch(setShowSearch());
+                                    dispatch(setSearchVisible());
                                 }}
                                 className={`${isMenuOpen ? "opacity-0 pointer-events-none" : ""}`}
                             >
@@ -53,7 +55,7 @@ const MovieNavBar = ({isLoggedIn, setIsLoggedIn}) => {
                                 to={"/signup"}
                                 onClick={() => {
                                     dispatch(clearSearchData());
-                                    dispatch(setShowSearch());
+                                    dispatch(setSearchVisible());
                                 }}
                                 className={`${isMenuOpen ? "opacity-0 pointer-events-none" : ""}`}
                             >
@@ -85,7 +87,7 @@ const MovieNavBar = ({isLoggedIn, setIsLoggedIn}) => {
                         className="mb-4"
                         onClick={() => {
                             dispatch(clearSearchData());
-                            dispatch(setShowSearch());
+                            dispatch(setSearchVisible());
                         }}
                     >
                         홈
@@ -95,7 +97,7 @@ const MovieNavBar = ({isLoggedIn, setIsLoggedIn}) => {
                         className="mb-4"
                         onClick={() => {
                             dispatch(clearSearchData());
-                            dispatch(setShowSearch());
+                            dispatch(setSearchVisible());
                         }}
                     >
                         로그인
@@ -105,7 +107,7 @@ const MovieNavBar = ({isLoggedIn, setIsLoggedIn}) => {
                         className="mb-4"
                         onClick={() => {
                             dispatch(clearSearchData());
-                            dispatch(setShowSearch());
+                            dispatch(setSearchVisible());
                         }}
                     >
                         회원가입

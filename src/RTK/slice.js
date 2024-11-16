@@ -75,8 +75,9 @@ export const searchSlice = createSlice({
     name: "search",
     initialState: {
         searchData: [], // 검색된 영화 목록
-        showSearchMovie: false, // 검색된 영화 목록 보여주기
+        isSearchVisible: false, // 검색된 영화 목록 보여주기
         searchInput: "", // 검색 인풋
+        isReleaseVisible: true, // 개봉 영화 상태
     },
     reducers: {
         setSearchData: (state, action) => {
@@ -85,12 +86,15 @@ export const searchSlice = createSlice({
         clearSearchData: state => {
             state.searchData = [];
         },
-        setShowSearch: (state, action) => {
-            state.showSearchMovie = action.payload;
+        setSearchVisible: (state, action) => {
+            state.isSearchVisible = action.payload;
         },
         setSearchInput: (state, action) => {
             state.searchInput = action.payload;
         },
+        setReleaseVisible: (state, action) => {
+            state.isReleaseVisible = action.payload;
+        },
     },
 });
-export const {setSearchData, clearSearchData, setShowSearch, setSearchInput} = searchSlice.actions;
+export const {setSearchData, clearSearchData, setSearchVisible, setSearchInput, setReleaseVisible} = searchSlice.actions;

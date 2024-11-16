@@ -17,7 +17,7 @@ export const fetchPopularMovie = createAsyncThunk("movies/fetchPopularMovie", as
     }
 });
 // 디테일
-export const fetchDetailMovie = createAsyncThunk("movies/fetchDetailMovie", async (_, {rejectWithValue}) => {
+export const fetchDetailMovie = createAsyncThunk("movies/fetchDetailMovie", async (movie_id, {rejectWithValue}) => {
     try {
         const response = await axios.get(`https://api.themoviedb.org/3/movie/${movie_id}`, {
             params: {
@@ -25,7 +25,6 @@ export const fetchDetailMovie = createAsyncThunk("movies/fetchDetailMovie", asyn
                 language: "ko-KR",
             },
         });
-        console.log(response);
         return response.data;
     } catch (error) {
         console.error("영화 디테일 페이지를 가져오는 중 오류 발생:", error);

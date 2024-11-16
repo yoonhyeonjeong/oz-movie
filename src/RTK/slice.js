@@ -37,7 +37,7 @@ const movieSlice = createSlice({
             // 성공
             .addCase(fetchDetailMovie.fulfilled, (state, action) => {
                 state.status = "succeeded";
-                state.detailMovie = action.payload.results; // 데이터저장
+                state.detailMovie = action.payload; // 데이터저장
             })
             // 실패
             .addCase(fetchDetailMovie.rejected, (state, action) => {

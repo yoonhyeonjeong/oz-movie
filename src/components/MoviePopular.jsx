@@ -1,22 +1,16 @@
 import {useEffect, useState} from "react";
-import {fetchPopularMovie} from "../api/api";
+import {fetchPopularMovie} from "../RTK/thunk";
+import {selectSortedPopularMovies} from "../RTK/selector";
+import {useDispatch, useSelector} from "react-redux";
 import {Link} from "react-router-dom";
 import MovieCard from "./MovieCard";
 const MoviePopular = ({showSearch, searchData}) => {
-    const [popularData, setPopularData] = useState([]);
+    const dispatch = useDispatch();
+    const popularMovie = useSelector(selectSortedPopularMovies);
+    // 컴포넌트가 마운트될때 인기 영화 데이터 호출
     useEffect(() => {
-        fetchPopularMovie().then(data => {
-            if (data) {
-                const sortedMovies = data.results
-                    .sort((a, b) => b.vote_average - a.vote_average)
-                    .map(movie => ({
-                        ...movie,
-                        vote_average: movie.vote_average.toFixed(1),
-                    }));
-                setPopularData(sortedMovies);
-            }
-        });
-    }, []);
+        dispatch(fetchPopularMovie());
+    }, [dispatch]);
 
     return (
         <div className="p-40">
@@ -31,7 +25,7 @@ const MoviePopular = ({showSearch, searchData}) => {
                               <MovieCard data={el} />
                           </Link>
                       ))
-                    : popularData.map(el => (
+                    : popularMovie.map(el => (
                           <Link
                               to={`/movie/${el.id}`}
                               key={el.id}

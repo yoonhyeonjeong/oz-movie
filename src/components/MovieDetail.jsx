@@ -1,17 +1,14 @@
-import {useEffect, useState} from "react";
+import {useEffect} from "react";
 import {useParams} from "react-router-dom";
-import {detailMovie} from "../api/api";
+import {fetchDetailMovie} from "../RTK/thunk";
+import {selectSortedDetailMovies} from "../RTK/selector";
+import {useDispatch, useSelector} from "react-redux";
 import styled from "styled-components";
 const MovieDetailContainer = styled.div`
-    background-image: ${({backgroundImage}) => `linear-gradient(to top, rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0.6)), url(${backgroundImage})`};
+    background-image: ${({bgImage}) => (bgImage ? `linear-gradient(to top, rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0.6)), url(${bgImage})` : "none")};
     .word-keep-all {
         word-break: keep-all;
     }
-    /* 태블릿 화면 (600px 이상, 1024px 이하) */
-
-    /* @media (min-width: 600px) and (max-width: 1024px) {
-        padding: 30px;
-    } */
 
     /* 모바일 화면 (600px 이하) */
     @media (max-width: 600px) {
@@ -32,46 +29,37 @@ const MovieDetailContainer = styled.div`
 `;
 const MovieDetail = () => {
     const {id} = useParams(); // URL에서 id 파라미터를 가져옴
-    const [detailData, setDetailData] = useState(null);
     const baseUrl = "https://image.tmdb.org/t/p/w500";
+    const dispatch = useDispatch();
+    const detailMovie = useSelector(selectSortedDetailMovies);
     useEffect(() => {
-        detailMovie(id)
-            .then(data => {
-                const formattedData = {
-                    ...data,
-                    vote_average: data.vote_average.toFixed(1),
-                };
-                setDetailData(formattedData);
-            })
-            .catch(error => {
-                console.log("API 호출 중 오류 발생:", error);
-            });
+        dispatch(fetchDetailMovie(id));
     }, [id]);
 
-    if (!detailData) {
-        return <div>Loading...</div>;
+    if (!detailMovie || !detailMovie.genres) {
+        return <div className="flex items-center justify-center h-[100vh]">Loading...</div>;
     }
-    console.log(detailData);
+
     return (
         <MovieDetailContainer
-            backgroundImage={baseUrl + detailData.backdrop_path}
+            bgImage={baseUrl + detailMovie.backdrop_path}
             className="flex items-center justify-center h-[100vh] bg-cover bg-center"
         >
             <div className="movie-detail flex items-center justify-center backdrop-blur-lg bg-black bg-opacity-60 text-white max-w-4xl md:max-w-3xl sm:max-w-full overflow-hidden">
                 <div className="img">
                     <img
-                        src={baseUrl + detailData.poster_path}
-                        alt={detailData.title}
+                        src={baseUrl + detailMovie.poster_path}
+                        alt={detailMovie.title}
                         className="w-[400px] max-w-none"
                     />
                 </div>
                 <div className="text-left ml-[20px]">
-                    <p className="text-3xl word-keep-all">{detailData.title}</p>
-                    {detailData.tagline && <p className="text-2xl mt-8">{detailData.tagline}</p>}
-                    <p className="mt-10">평점 : {detailData.vote_average}</p>
+                    <p className="text-3xl word-keep-all">{detailMovie.title}</p>
+                    {detailMovie.tagline && <p className="text-2xl mt-8">{detailMovie.tagline}</p>}
+                    <p className="mt-10">평점 : {detailMovie.vote_average}</p>
                     <p className="mt-8">
                         장르 :
-                        {detailData.genres.map((el, index) => (
+                        {detailMovie.genres.map((el, index) => (
                             <span
                                 key={index}
                                 className="mx-[3px]"
@@ -80,8 +68,8 @@ const MovieDetail = () => {
                             </span>
                         ))}
                     </p>
-                    <p className="mt-8">개봉일 : {detailData.release_date}</p>
-                    <p className="mt-8 leading-relaxed line-clamp-6 overflow-hidden overview">{detailData.overview}</p>
+                    <p className="mt-8">개봉일 : {detailMovie.release_date}</p>
+                    <p className="mt-8 leading-relaxed line-clamp-6 overflow-hidden overview">{detailMovie.overview}</p>
                 </div>
             </div>
         </MovieDetailContainer>

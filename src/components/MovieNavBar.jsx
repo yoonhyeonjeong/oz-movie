@@ -5,15 +5,14 @@ import MovieSearchList from "./MovieSearchList";
 import MovieLoginStatus from "./MovieLoginStatus";
 import {useDispatch, useSelector} from "react-redux";
 import {selectSortedSearchrMovies} from "../RTK/selector";
-import {setSearchData, clearSearchData, setSearchInput, setSearchVisible} from "../RTK/slice";
+import {setSearchData, clearSearchData, setSearchInput, setSearchVisible, setReleaseVisible, setInputVisible} from "../RTK/slice";
 
 const MovieNavBar = ({isLoggedIn, setIsLoggedIn}) => {
     const dispatch = useDispatch();
-    const searchMovie = useSelector(selectSortedSearchrMovies); // 정렬된 검색 데이터
+    const inputVisible = useSelector(state => state.search.isInputVisible); // 슬라이스에서 인풋 상태 갖고오기
     // 햄버거 메뉴 상태
     const [isMenuOpen, setIsMenuOpen] = useState(false);
     const searchData = useSelector(state => state.search.searchData);
-    console.log(searchData); // 이곳에서 상태를 확인
     // 메뉴 열릴 때 body 스크롤 방지
     if (isMenuOpen) {
         document.body.style.overflow = "hidden"; // 메뉴 열리면 스크롤 비활성화
@@ -30,6 +29,8 @@ const MovieNavBar = ({isLoggedIn, setIsLoggedIn}) => {
                         console.log("Clear Search Data Triggered");
                         dispatch(clearSearchData());
                         dispatch(setSearchVisible());
+                        dispatch(setReleaseVisible(true));
+                        dispatch(setInputVisible(false));
                     }}
                     className={`${isMenuOpen ? "opacity-0 pointer-events-none" : ""}`}
                 >
@@ -37,7 +38,15 @@ const MovieNavBar = ({isLoggedIn, setIsLoggedIn}) => {
                 </Link>
 
                 <div className="ml-auto flex items-center justify-center">
-                    <MovieInput />
+                    <button
+                        className="pr-10"
+                        onClick={() => {
+                            dispatch(setInputVisible(!inputVisible));
+                        }}
+                    >
+                        영화검색
+                    </button>
+
                     {/* 로그인 안했을때 기본 */}
                     {!isLoggedIn && (
                         <div className="flex gap-10 sm:flex hidden">
@@ -72,7 +81,7 @@ const MovieNavBar = ({isLoggedIn, setIsLoggedIn}) => {
 
                 {/* 햄버거 버튼 */}
                 <button
-                    className="sm:hidden text-white text-[30px] ml-auto w-[30px] h-[30px] flex items-center justify-center mt-[-5px] fixed top-[20px] right-[20px] z-[999999]"
+                    className="sm:hidden text-white text-[30px] ml-auto w-[30px] h-[30px] flex items-center justify-center mt-[-5px] fixed top-[20px] right-[20px] z-[999999] pl-30"
                     onClick={() => setIsMenuOpen(prev => !prev)}
                 >
                     {isMenuOpen ? "✕" : "☰"}
@@ -114,9 +123,10 @@ const MovieNavBar = ({isLoggedIn, setIsLoggedIn}) => {
                     </Link>
                 </nav>
             )}
-
+            {/* 검색 인풋 */}
+            {inputVisible && <MovieInput />}
             {/* 검색결과리스트 */}
-            {searchMovie.length > 0 && <MovieSearchList searchData={searchMovie} />}
+            {searchData.length > 0 && <MovieSearchList searchData={searchData} />}
         </>
     );
 };

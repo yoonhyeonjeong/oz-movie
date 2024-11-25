@@ -32,23 +32,28 @@ const MovieInput = () => {
 
     // 버튼 클릭
     const handleClick = () => {
-        dispatch(setSearchVisible(true));
-        dispatch(setSearchData(searchMovie));
-        alert("검색이 완료되었습니다");
-        dispatch(setReleaseVisible(false));
+        if (!inputValue) {
+            alert("검색어를 입력해주세요!!");
+            return;
+        } else {
+            dispatch(setSearchVisible(true));
+            dispatch(setSearchData(searchMovie));
+            alert("검색이 완료되었습니다");
+            dispatch(setReleaseVisible(false));
+        }
     };
     return (
         <>
-            <div className="relative hidden lg:block mr-20">
+            <div className="relative flex items-start justify-center py-80 px-20 pb-30 bg-midnightBlack">
                 <input
-                    className="text-midnightBlack p-4 w-full pl-10"
+                    className="text-midnightBlack p-4 w-full pl-10 h-50 text-lg"
                     type="text"
                     value={inputValue}
                     placeholder="영화제목을 입력하세요"
                     onChange={handleChange}
                 />
                 <button
-                    className="absolute right-4 top-1/2 transform -translate-y-1/2"
+                    className="absolute right-20 pointer-events-auto w-30 h-30 pt-13"
                     onClick={handleClick}
                 >
                     🔍

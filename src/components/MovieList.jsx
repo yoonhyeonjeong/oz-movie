@@ -16,6 +16,7 @@ const MovieList = () => {
     const dispatch = useDispatch();
     const releaseMovie = useSelector(selectSortedReleaseMovies); // 정렬된 개봉 영화 데이터
     const isReleaseVisible = useSelector(state => state.search.isReleaseVisible); // 슬라이스에서 개봉영화 상태 갖고오기
+    const inputVisible = useSelector(state => state.search.isInputVisible); // 슬라이스에서 인풋 상태 갖고오기
     // 컴포넌트 마운트시 데이터를 불러옴
     useEffect(() => {
         dispatch(fetchReleaseMovie());
@@ -23,7 +24,7 @@ const MovieList = () => {
     console.log(isReleaseVisible);
     return (
         isReleaseVisible && (
-            <div className="p-40 mt-70 relative">
+            <div className={`p-40 relative ${inputVisible ? "" : "mt-70"}`}>
                 <h1 className="text-3xl font-semibold text-left mb-20">개봉예정 영화</h1>
                 <Swiper
                     modules={[Navigation, Autoplay]}

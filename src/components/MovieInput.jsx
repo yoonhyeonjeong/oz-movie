@@ -25,6 +25,11 @@ const MovieInput = () => {
         }
     }, [debounceSearch, dispatch]);
 
+    useEffect(() => {
+        // `searchMovie` 상태가 변경될 때 `searchData` 업데이트
+        dispatch(setSearchData(searchMovie));
+    }, [searchMovie, dispatch]);
+
     // 입력 이벤트 핸들러
     const handleChange = e => {
         dispatch(setSearchInput(e.target.value));

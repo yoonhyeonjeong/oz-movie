@@ -1,24 +1,37 @@
 import {Link} from "react-router-dom";
 import MovieInput from "./MovieInput";
-import {useState} from "react";
+import {useState, useEffect} from "react";
 import MovieSearchList from "./MovieSearchList";
 import MovieLoginStatus from "./MovieLoginStatus";
 import {useDispatch, useSelector} from "react-redux";
-import {selectSortedSearchrMovies} from "../RTK/selector";
-import {setSearchData, clearSearchData, setSearchInput, setSearchVisible, setReleaseVisible, setInputVisible} from "../RTK/slice";
+import {clearSearchData, toggleTheme, setSearchVisible, setReleaseVisible, setInputVisible} from "../RTK/slice";
+import {MdDarkMode, MdOutlineDarkMode} from "react-icons/md";
 
 const MovieNavBar = ({isLoggedIn, setIsLoggedIn}) => {
     const dispatch = useDispatch();
     const inputVisible = useSelector(state => state.search.isInputVisible); // 슬라이스에서 인풋 상태 갖고오기
+    // 다크모드
+    const isDarkMode = useSelector(state => state.theme.isDarkMode); // 슬라이스에서 다크모드 상태 갖고오기
     // 햄버거 메뉴 상태
     const [isMenuOpen, setIsMenuOpen] = useState(false);
     const searchData = useSelector(state => state.search.searchData);
     // 메뉴 열릴 때 body 스크롤 방지
-    if (isMenuOpen) {
-        document.body.style.overflow = "hidden"; // 메뉴 열리면 스크롤 비활성화
-    } else {
-        document.body.style.overflow = "auto"; // 메뉴 닫히면 스크롤 활성화
-    }
+    useEffect(() => {
+        if (isMenuOpen) {
+            document.body.style.overflow = "hidden";
+        } else {
+            document.body.style.overflow = "auto";
+        }
+    }, [isMenuOpen]);
+
+    useEffect(() => {
+        if (isDarkMode) {
+            document.body.classList.add("dark");
+        } else {
+            document.body.classList.remove("dark");
+        }
+        console.log(isDarkMode);
+    }, [isDarkMode]);
 
     return (
         <>
@@ -41,10 +54,18 @@ const MovieNavBar = ({isLoggedIn, setIsLoggedIn}) => {
                     <button
                         className="pr-10"
                         onClick={() => {
+                            dispatch(toggleTheme());
+                        }}
+                    >
+                        {isDarkMode ? <MdDarkMode /> : <MdOutlineDarkMode />}
+                    </button>
+                    <button
+                        className="pr-10"
+                        onClick={() => {
                             dispatch(setInputVisible(!inputVisible));
                         }}
                     >
-                        영화검색
+                        검색
                     </button>
 
                     {/* 로그인 안했을때 기본 */}

@@ -101,4 +101,17 @@ export const searchSlice = createSlice({
         },
     },
 });
+export const themeSlice = createSlice({
+    name: "theme",
+    initialState: {
+        isDarkMode: localStorage.getItem("isDarkMode") === "true", // 로컬 스토리지에서 초기 상태 가져오기
+    },
+    reducers: {
+        toggleTheme: state => {
+            state.isDarkMode = !state.isDarkMode;
+            localStorage.setItem("isDarkMode", state.isDarkMode); // 상태 변경 시 로컬 스토리지에 저장
+        },
+    },
+});
 export const {setSearchData, clearSearchData, setSearchVisible, setSearchInput, setReleaseVisible, setInputVisible} = searchSlice.actions;
+export const {toggleTheme} = themeSlice.actions;

@@ -18,7 +18,7 @@ const MovieSearchContainer = styled.div`
         padding-bottom: 8px;
         overflow-x: auto;
         justify-content: flex-start;
-        scrollbar-width: none;
+        scrollbar-color: #888 #121212;
 
         a {
             flex: 0 0 calc(20% - 16px);
@@ -44,7 +44,6 @@ const MovieSearchContainer = styled.div`
 `;
 const MovieSearchList = ({searchData}) => {
     const location = useLocation();
-    const limitedSearchData = searchData.slice(0, 5); // 5개만 보여주기
     // 현재 URL이 `/movie`로 시작되면 (링크로 디테일페이지 갔을때 , true false 반환)
     const isDetailPage = location.pathname.startsWith("/movie");
     const inputValue = useSelector(state => state.search.searchInput); // 슬라이스에서 인풋 상태 갖고오기

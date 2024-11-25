@@ -45,3 +45,8 @@
     object-fit: cover;
     width: 100%;
 }
+/* darkmode */
+body.dark {
+    background: #121212;
+    color: #fff;
+}

@@ -2,15 +2,17 @@ import {createAsyncThunk} from "@reduxjs/toolkit";
 import axios from "axios";
 const APIKEY = import.meta.env.VITE_TMDB_API_KEY;
 // 인기영화
-export const fetchPopularMovie = createAsyncThunk("movies/fetchPopularMovie", async (_, {rejectWithValue}) => {
+export const fetchPopularMovie = createAsyncThunk("movies/fetchPopularMovie", async (page, {rejectWithValue}) => {
     try {
         const response = await axios.get(`https://api.themoviedb.org/3/movie/popular`, {
             params: {
                 api_key: APIKEY,
                 language: "ko-KR",
+                page,
             },
         });
-        return response.data;
+        console.log(response.data.results);
+        return response.data.results;
     } catch (error) {
         console.error("영화 데이터를 가져오는 중 오류 발생:", error);
         return rejectWithValue(error.response ? error.response.data : error.message);

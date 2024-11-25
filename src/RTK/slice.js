@@ -13,20 +13,20 @@ export const movieSlice = createSlice({
     },
     extraReducers: builder => {
         builder
-            // 인기영화 진행중
-            .addCase(fetchPopularMovie.pending, state => {
-                state.status = "loading";
-            })
-            // 성공
-            .addCase(fetchPopularMovie.fulfilled, (state, action) => {
-                state.status = "succeeded";
-                state.popularMovie = action.payload.results; // 데이터저장
-            })
-            // 실패
-            .addCase(fetchPopularMovie.rejected, (state, action) => {
-                state.status = "failed";
-                state.error = action.payload || "Unknown error";
-            })
+            // // 인기영화 진행중
+            // .addCase(fetchPopularMovie.pending, state => {
+            //     state.status = "loading";
+            // })
+            // // 성공
+            // .addCase(fetchPopularMovie.fulfilled, (state, action) => {
+            //     state.status = "succeeded";
+            //     state.popularMovie = action.payload.results; // 데이터저장
+            // })
+            // // 실패
+            // .addCase(fetchPopularMovie.rejected, (state, action) => {
+            //     state.status = "failed";
+            //     state.error = action.payload || "Unknown error";
+            // })
             // 디테일 진행중
             .addCase(fetchDetailMovie.pending, state => {
                 state.status = "loading";
@@ -113,5 +113,44 @@ export const themeSlice = createSlice({
         },
     },
 });
+// 무한스크롤
+export const infiniteScrollSlice = createSlice({
+    name: "infiniteScroll",
+    initialState: {
+        items: [],
+        page: 1,
+        isLoading: false,
+        hasMore: true,
+    },
+    reducers: {
+        resetState: state => {
+            state.items = [];
+            state.page = 1;
+            state.hasMore = true;
+        },
+    },
+    extraReducers: builder => {
+        builder
+            // 대기
+            .addCase(fetchPopularMovie.pending, state => {
+                state.isLoading = true;
+            }) // 성공
+            .addCase(fetchPopularMovie.fulfilled, (state, action) => {
+                console.log(action.payload);
+                state.status = "succeeded";
+                state.items = [...state.items, ...action.payload.filter(item => !state.items.some(existingItem => existingItem.id === item.id))];
+                state.page += 1;
+                state.isLoading = false;
+                state.hasMore = action.payload.length > 0; // 데이터 없으면종료
+            })
+            // 실패
+            .addCase(fetchReleaseMovie.rejected, (state, action) => {
+                state.status = "failed";
+                state.error = action.payload || "Unknown error";
+                state.isLoading = false;
+            });
+    },
+});
 export const {setSearchData, clearSearchData, setSearchVisible, setSearchInput, setReleaseVisible, setInputVisible} = searchSlice.actions;
 export const {toggleTheme} = themeSlice.actions;
+export const {resetState} = infiniteScrollSlice.actions;

@@ -15,9 +15,10 @@ export const selectSortedReleaseMovies = createSelector(
 
 // 인기순 영화 정렬
 export const selectSortedPopularMovies = createSelector(
-    state => state.movies.popularMovie,
-    popularMovie =>
-        [...popularMovie]
+    state => state.infiniteScroll.items,
+    items =>
+        [...items]
+            .filter(item => item.vote_average != null) // vote_average가 존재하는 항목만 정렬
             .sort((a, b) => b.vote_average - a.vote_average)
             .map(movie => ({
                 ...movie,
